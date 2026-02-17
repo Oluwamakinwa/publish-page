@@ -1,0 +1,86 @@
+# publish-page
+
+A Zo Computer skill that publishes markdown files as beautifully designed web pages on [zo.space](https://zo.space).
+
+Write markdown, pick a style, publish. Your page gets dark mode, syntax highlighting, reading progress, table of contents, and mermaid diagrams — all automatically.
+
+## Features
+
+- **7 style presets**: editorial, minimal, warm, mono, precision, bold, sophisticated
+- **Dark mode**: Auto-detects system preference + manual toggle
+- **Syntax highlighting**: Prism.js loaded from CDN when code blocks are present
+- **Mermaid diagrams**: [beautiful-mermaid](https://github.com/lukilabs/beautiful-mermaid) renders themed SVG diagrams
+- **GFM tables**: With column alignment support
+- **Table of contents**: Auto-generated from headings
+- **Reading progress bar**: Thin colored bar showing scroll position
+- **Reading time estimate**: Word-count-based "X min read"
+- **Open Graph meta tags**: Social sharing previews for links
+- **Task list checkboxes**: `- [x]` and `- [ ]` support
+- **Image captions**: `![alt](url "caption")` renders as figure with figcaption
+- **Print stylesheet**: Clean print output
+- **Custom accent colors**: `--accent "#hex"` without changing presets
+- **Heading anchors**: Direct linking to sections via `#fragment`
+
+## Style Presets
+
+| Preset | Fonts | Feel |
+|--------|-------|------|
+| **editorial** | Playfair Display + Source Serif 4 | Magazine-quality serif typography |
+| **minimal** | Inter | Clean Swiss-style, pure white |
+| **warm** | Lora + Nunito Sans | Cream tones, cozy and inviting |
+| **mono** | IBM Plex Mono + IBM Plex Sans | Dark background, technical |
+| **precision** | System UI + JetBrains Mono | Cool slate, borders-only, sharp |
+| **bold** | Space Grotesk | High contrast, red accents, dramatic |
+| **sophisticated** | DM Serif Display + DM Sans | Indigo accents, premium feel |
+
+## Usage
+
+```bash
+# Publish with default editorial style
+bun run scripts/publish.ts my-essay.md
+
+# Pick a style
+bun run scripts/publish.ts my-essay.md --style bold
+
+# Custom accent color
+bun run scripts/publish.ts my-essay.md --accent "#2563eb"
+
+# Custom route path
+bun run scripts/publish.ts my-essay.md --path /notes/my-essay
+```
+
+The script outputs `PUBLISH_OUTPUT:` followed by JSON containing `routePath`, `title`, `style`, `public`, and `code`. Use the code with zo.space's `update_space_route` to deploy.
+
+## Markdown Support
+
+- Headings h1-h6 with anchor IDs
+- Bold (`**`/`__`), italic (`*`/`_`), strikethrough (`~~`), highlight (`==`)
+- Links, images with captions
+- Fenced code blocks with syntax highlighting
+- Mermaid diagram blocks
+- GFM tables with alignment
+- Blockquotes
+- Ordered/unordered lists
+- Task list checkboxes
+- Horizontal rules
+- YAML frontmatter (title, subtitle, author, date)
+
+## Design Philosophy
+
+Inspired by [Craft Docs](https://craft.do), [impeccable.style](https://github.com/pbakaus/impeccable), and [interface-design](https://github.com/Dammyjay93/interface-design):
+
+- Typography first — carefully paired fonts with proper hierarchy
+- Warm, not sterile — tinted backgrounds, tinted text
+- Breathing room — generous margins and spacing
+- No clutter — just the content
+- Intent over decoration — every choice traces back to what the page should feel like
+
+## Live Examples
+
+- [Style preview (7 presets)](https://zzzz.zo.space/styles)
+- [Complete feature test](https://zzzz.zo.space/the-complete-feature-test)
+- [Mermaid diagrams](https://zzzz.zo.space/system-architecture)
+
+## License
+
+MIT
