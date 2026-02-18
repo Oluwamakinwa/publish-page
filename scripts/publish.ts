@@ -238,7 +238,7 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
     const text = paragraphBuffer.join(" ");
     const formatted = inlineFormat(text);
     elements.push(
-      `<p className="mb-6 leading-relaxed" style={{ color: "var(--text-color)", fontSize: "1.1rem", lineHeight: 1.8 }}>${formatted}</p>`
+      `<p className="leading-relaxed" style={{ color: "var(--text-color)", fontSize: "1.06rem", lineHeight: 1.82, marginBottom: "1.45rem", maxWidth: "68ch" }}>${formatted}</p>`
     );
     paragraphBuffer = [];
   }
@@ -254,12 +254,12 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
         if (checkMatch) {
           const checked = checkMatch[1] !== " ";
           const text = checkMatch[2];
-          return `<li className="mb-2 leading-relaxed" style={{ listStyle: "none", marginLeft: "-1.5rem" }}><span style={{ marginRight: "0.5rem", opacity: ${checked ? 1 : 0.4} }}>${checked ? "\u2611" : "\u2610"}</span>${inlineFormat(text)}</li>`;
+          return `<li className="leading-relaxed" style={{ listStyle: "none", marginLeft: "-1.5rem", marginBottom: "0.25rem" }}><span style={{ marginRight: "0.5rem", opacity: ${checked ? 1 : 0.4} }}>${checked ? "\u2611" : "\u2610"}</span>${inlineFormat(text)}</li>`;
         }
-        return `<li className="mb-2 leading-relaxed">${inlineFormat(item)}</li>`;
+        return `<li className="leading-relaxed" style={{ marginBottom: "0.25rem" }}>${inlineFormat(item)}</li>`;
       })
       .join("\n              ");
-    elements.push(`<${tag} className="${listClass} pl-8 mb-8 space-y-1" style={{ color: "var(--text-color)" }}>\n              ${items}\n            </${tag}>`);
+    elements.push(`<${tag} className="${listClass} pl-6 space-y-0.5" style={{ color: "var(--text-color)", marginBottom: "1.45rem", lineHeight: 1.72 }}>\n              ${items}\n            </${tag}>`);
     listItems = [];
     inList = false;
   }
@@ -268,8 +268,8 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
     if (!inBlockquote) return;
     const content = blockquoteLines.join(" ");
     elements.push(
-      `<blockquote className="border-l-[3px] pl-6 py-4 my-8 italic" style={{ borderColor: "var(--blockquote-border)", backgroundColor: "var(--blockquote-bg)", marginLeft: 0, marginRight: 0, borderRadius: "0 6px 6px 0", padding: "1.25rem 1.5rem" }}>
-              <p className="leading-relaxed" style={{ color: "var(--muted-color)", fontSize: "1.05rem" }}>${inlineFormat(content)}</p>
+      `<blockquote className="border-l-[3px] pl-6 py-3 italic" style={{ borderColor: "var(--blockquote-border)", backgroundColor: "var(--blockquote-bg)", marginLeft: 0, marginRight: 0, marginBottom: "1.5rem", borderRadius: "0 8px 8px 0", padding: "1.1rem 1.35rem" }}>
+              <p className="leading-relaxed" style={{ color: "var(--muted-color)", fontSize: "1rem" }}>${inlineFormat(content)}</p>
             </blockquote>`
     );
     blockquoteLines = [];
@@ -296,7 +296,7 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
       )
       .join("\n                  ");
     elements.push(
-      `<div className="my-8 overflow-x-auto" style={{ borderRadius: "8px", border: "1px solid var(--border-color)" }}>
+      `<div className="overflow-x-auto" style={{ borderRadius: "10px", border: "1px solid var(--border-color)", marginTop: "1.1rem", marginBottom: "1.55rem" }}>
               <table style={{ width: "100%", borderCollapse: "collapse", fontFamily: "var(--body-font)" }}>
                 <thead style={{ backgroundColor: "var(--surface-color)" }}>
                   <tr>
@@ -355,7 +355,7 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
           hasMermaid = true;
           const mermaidSrc = escapeForJSXContent(codeContent.join("\n"));
           elements.push(
-            `<div className="my-8 flex justify-center">
+            `<div className="flex justify-center" style={{ marginTop: "1rem", marginBottom: "1.25rem" }}>
               <div className="mermaid-diagram" data-diagram={\`${mermaidSrc}\`} style={{ minHeight: "100px", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <p className="text-sm" style={{ color: "var(--muted-color)" }}>Loading diagram...</p>
               </div>
@@ -366,7 +366,7 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
           const escaped = escapeForJSXContent(codeContent.join("\n"));
           const langClass = codeLang ? ` language-${codeLang}` : "";
           elements.push(
-            `<div className="my-8 rounded-lg overflow-hidden" style={{ backgroundColor: "var(--code-bg)", border: "1px solid var(--border-color)" }}>
+            `<div className="rounded-lg overflow-hidden" style={{ backgroundColor: "var(--code-bg)", border: "1px solid var(--border-color)", marginTop: "1rem", marginBottom: "1.25rem" }}>
               ${codeLang ? `<div className="px-4 py-2 text-xs uppercase tracking-wider" style={{ color: "var(--muted-color)", borderBottom: "1px solid var(--border-color)" }}>${codeLang}</div>` : ""}
               <pre className="p-5 overflow-x-auto${langClass}"><code className="${langClass}" style={{ fontFamily: "var(--code-font)", fontSize: "0.85rem", lineHeight: 1.7, color: "var(--text-color)" }}>{\`${escaped}\`}</code></pre>
             </div>`
@@ -451,12 +451,12 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
       headings.push({ level, text: plainText, id: headingId });
       const text = inlineFormat(rawText);
       const styles: Record<number, string> = {
-        1: `id="${headingId}" className="font-bold mb-6 mt-16 first:mt-0 leading-tight" style={{ fontFamily: "var(--heading-font)", fontSize: "clamp(2rem, 5vw, 2.75rem)", color: "var(--accent-color)", letterSpacing: "-0.02em" }}`,
-        2: `id="${headingId}" className="font-semibold mb-5 mt-14 leading-snug" style={{ fontFamily: "var(--heading-font)", fontSize: "clamp(1.5rem, 3.5vw, 2rem)", color: "var(--accent-color)", letterSpacing: "-0.015em" }}`,
-        3: `id="${headingId}" className="font-semibold mb-4 mt-10 leading-snug" style={{ fontFamily: "var(--heading-font)", fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)", color: "var(--accent-color)", letterSpacing: "-0.01em" }}`,
-        4: `id="${headingId}" className="font-medium mb-3 mt-8 uppercase tracking-wider" style={{ fontFamily: "var(--heading-font)", fontSize: "0.9rem", color: "var(--muted-color)" }}`,
-        5: `id="${headingId}" className="font-medium mb-3 mt-6" style={{ fontFamily: "var(--heading-font)", fontSize: "0.85rem", color: "var(--muted-color)" }}`,
-        6: `id="${headingId}" className="font-normal mb-2 mt-4 uppercase tracking-widest" style={{ fontFamily: "var(--heading-font)", fontSize: "0.75rem", color: "var(--muted-color)" }}`,
+        1: `id="${headingId}" className="font-bold first:mt-0 leading-tight" style={{ fontFamily: "var(--heading-font)", fontSize: "clamp(2rem, 5vw, 2.75rem)", color: "var(--accent-color)", letterSpacing: "-0.02em", marginTop: "2.5rem", marginBottom: "0.75rem" }}`,
+        2: `id="${headingId}" className="font-semibold leading-snug" style={{ fontFamily: "var(--heading-font)", fontSize: "clamp(1.4rem, 3.5vw, 1.85rem)", color: "var(--accent-color)", letterSpacing: "-0.015em", marginTop: "2.55rem", marginBottom: "0.8rem" }}`,
+        3: `id="${headingId}" className="font-semibold leading-snug" style={{ fontFamily: "var(--heading-font)", fontSize: "clamp(1.15rem, 2.5vw, 1.35rem)", color: "var(--accent-color)", letterSpacing: "-0.01em", marginTop: "2rem", marginBottom: "0.6rem" }}`,
+        4: `id="${headingId}" className="font-medium uppercase tracking-wider" style={{ fontFamily: "var(--heading-font)", fontSize: "0.85rem", color: "var(--muted-color)", marginTop: "1.5rem", marginBottom: "0.375rem" }}`,
+        5: `id="${headingId}" className="font-medium" style={{ fontFamily: "var(--heading-font)", fontSize: "0.8rem", color: "var(--muted-color)", marginTop: "1.25rem", marginBottom: "0.375rem" }}`,
+        6: `id="${headingId}" className="font-normal uppercase tracking-widest" style={{ fontFamily: "var(--heading-font)", fontSize: "0.75rem", color: "var(--muted-color)", marginTop: "1rem", marginBottom: "0.25rem" }}`,
       };
       elements.push(`<h${level} ${styles[level]}>${text}</h${level}>`);
       continue;
@@ -466,7 +466,7 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
     if (/^(-{3,}|\*{3,}|_{3,})$/.test(line.trim())) {
       flushParagraph();
       flushList();
-      elements.push(`<hr className="my-12 border-none h-px" style={{ backgroundColor: "var(--border-color)" }} />`);
+      elements.push(`<hr className="border-none h-px" style={{ backgroundColor: "var(--border-color)", marginTop: "2rem", marginBottom: "2rem" }} />`);
       continue;
     }
 
@@ -516,7 +516,7 @@ function markdownToReactElements(md: string, skipTitle?: string): ParseResult {
   return { html: elements.join("\n            "), hasMermaid, hasPrism, headings };
 }
 
-function generatePageCode(title: string, body: string, style: StylePreset, meta: Record<string, string>, accentOverride?: string): string {
+function generatePageCode(title: string, body: string, style: StylePreset, styleName: string, meta: Record<string, string>, accentOverride?: string): string {
   const effectiveStyle = accentOverride ? { ...style, linkColor: accentOverride, blockquoteBorder: accentOverride } : style;
   const { html: contentElements, hasMermaid, hasPrism, headings } = markdownToReactElements(body, title);
   const subtitle = meta.subtitle || meta.description || "";
@@ -604,22 +604,89 @@ function generatePageCode(title: string, body: string, style: StylePreset, meta:
   const darkBlockquoteBg = isDark ? "#F5F2ED" : "#1A1A1A";
   const darkLink = isDark ? "#5B4A3F" : "#80CBC4";
 
-  return `import { useState, useEffect } from "react";
+  // All style presets for the style switcher — serialized at build time
+  const allStylesJSON = JSON.stringify(
+    Object.fromEntries(
+      Object.entries(STYLES).map(([name, s]) => [
+        name,
+        {
+          fontImport: s.fontImport,
+          headingFont: s.headingFont,
+          bodyFont: s.bodyFont,
+          bgColor: s.bgColor,
+          textColor: s.textColor,
+          accentColor: s.accentColor,
+          mutedColor: s.mutedColor,
+          surfaceColor: s.surfaceColor,
+          borderColor: s.borderColor,
+          linkColor: s.linkColor,
+          codeFont: s.codeFont,
+          codeBg: s.codeBg,
+          blockquoteBorder: s.blockquoteBorder,
+          blockquoteBg: s.blockquoteBg,
+          maxWidth: s.maxWidth,
+        },
+      ])
+    )
+  );
+
+  // Dark mode variants per style
+  const darkVariantsJSON = JSON.stringify({
+    editorial: { bg: "#1A1918", text: "#E0DDD8", accent: "#F5F2ED", muted: "#8A8A82", surface: "#252420", border: "#3A3832", link: "#C4A882", codeBg: "#252420", bqBorder: "#5A4A3A", bqBg: "#252420" },
+    minimal: { bg: "#111111", text: "#E0E0E0", accent: "#FFFFFF", muted: "#888888", surface: "#1A1A1A", border: "#333333", link: "#5C9CE6", codeBg: "#1A1A1A", bqBorder: "#555555", bqBg: "#1A1A1A" },
+    warm: { bg: "#1F1A14", text: "#E0D8CE", accent: "#F5EDE4", muted: "#9B8E80", surface: "#2A231A", border: "#3D3229", link: "#C4A882", codeBg: "#2A231A", bqBorder: "#5A4A3A", bqBg: "#2A231A" },
+    mono: { bg: "#FAFAF7", text: "#2C2C2A", accent: "#1A1A18", muted: "#8A8A82", surface: "#F0F0EB", border: "#E0E0D8", link: "#5B4A3F", codeBg: "#F0F0EB", bqBorder: "#C8B8A8", bqBg: "#F5F2ED" },
+    precision: { bg: "#0F172A", text: "#E2E8F0", accent: "#F8FAFC", muted: "#94A3B8", surface: "#1E293B", border: "#334155", link: "#60A5FA", codeBg: "#1E293B", bqBorder: "#3B82F6", bqBg: "#1E293B" },
+    bold: { bg: "#18181B", text: "#E4E4E7", accent: "#FAFAFA", muted: "#A1A1AA", surface: "#27272A", border: "#3F3F46", link: "#F87171", codeBg: "#27272A", bqBorder: "#EF4444", bqBg: "#27272A" },
+    sophisticated: { bg: "#111827", text: "#E5E7EB", accent: "#F9FAFB", muted: "#9CA3AF", surface: "#1F2937", border: "#374151", link: "#818CF8", codeBg: "#1F2937", bqBorder: "#6366F1", bqBg: "#1F2937" },
+  });
+
+  return `import { useState, useEffect, useRef } from "react";
 
 export default function PublishedPage() {
   const [mounted, setMounted] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [showToc, setShowToc] = useState(false);
+  const [showStylePicker, setShowStylePicker] = useState(false);
+  const stylePickerRef = useRef<HTMLDivElement | null>(null);
+  const [currentStyle, setCurrentStyle] = useState("${styleName}");
   const [progress, setProgress] = useState(0);
+
+  const styles = ${allStylesJSON};
+
+  const darkVariants = ${darkVariantsJSON};
+
+  const s = styles[currentStyle];
+  const d = darkVariants[currentStyle];
 
   useEffect(() => {
     setMounted(true);
+    const savedStyle = localStorage.getItem("zo-publish-style");
+    if (savedStyle && styles[savedStyle]) {
+      setCurrentStyle(savedStyle);
+    }
     const mq = window.matchMedia("(prefers-color-scheme: dark)");
     setDarkMode(mq.matches);
     const handler = (e: MediaQueryListEvent) => setDarkMode(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("zo-publish-style", currentStyle);
+  }, [currentStyle]);
+
+  useEffect(() => {
+    if (!showStylePicker) return;
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!stylePickerRef.current) return;
+      if (!stylePickerRef.current.contains(event.target as Node)) {
+        setShowStylePicker(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [showStylePicker]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -629,42 +696,64 @@ export default function PublishedPage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Load fonts when style changes
+  useEffect(() => {
+    const id = "style-font-" + currentStyle;
+    if (!document.getElementById(id)) {
+      const link = document.createElement("link");
+      link.id = id;
+      link.rel = "stylesheet";
+      link.href = s.fontImport;
+      document.head.appendChild(link);
+    }
+  }, [currentStyle, s.fontImport]);
 ${mermaidEffect}
 ${prismEffect}
+
+  const styleNames: Record<string, string> = {
+    editorial: "Editorial",
+    minimal: "Minimal",
+    warm: "Warm",
+    mono: "Mono",
+    precision: "Precision",
+    bold: "Bold",
+    sophisticated: "Sophisticated",
+  };
 
   return (
     <>
       <style>{\`
-        @import url('${effectiveStyle.fontImport}');
+        @import url('\${s.fontImport}');
         :root {
-          --heading-font: ${effectiveStyle.headingFont};
-          --body-font: ${effectiveStyle.bodyFont};
-          --bg-color: ${effectiveStyle.bgColor};
-          --text-color: ${effectiveStyle.textColor};
-          --accent-color: ${effectiveStyle.accentColor};
-          --muted-color: ${effectiveStyle.mutedColor};
-          --surface-color: ${effectiveStyle.surfaceColor};
-          --border-color: ${effectiveStyle.borderColor};
-          --link-color: ${effectiveStyle.linkColor};
-          --code-font: ${effectiveStyle.codeFont};
-          --code-bg: ${effectiveStyle.codeBg};
-          --blockquote-border: ${effectiveStyle.blockquoteBorder};
-          --blockquote-bg: ${effectiveStyle.blockquoteBg};
+          --heading-font: \${s.headingFont};
+          --body-font: \${s.bodyFont};
+          --bg-color: \${s.bgColor};
+          --text-color: \${s.textColor};
+          --accent-color: \${s.accentColor};
+          --muted-color: \${s.mutedColor};
+          --surface-color: \${s.surfaceColor};
+          --border-color: \${s.borderColor};
+          --link-color: \${s.linkColor};
+          --code-font: \${s.codeFont};
+          --code-bg: \${s.codeBg};
+          --blockquote-border: \${s.blockquoteBorder};
+          --blockquote-bg: \${s.blockquoteBg};
         }
         .dark-mode {
-          --bg-color: ${darkBg};
-          --text-color: ${darkText};
-          --accent-color: ${darkAccent};
-          --muted-color: ${darkMuted};
-          --surface-color: ${darkSurface};
-          --border-color: ${darkBorder};
-          --link-color: ${darkLink};
-          --code-bg: ${darkCodeBg};
-          --blockquote-border: ${darkBlockquoteBorder};
-          --blockquote-bg: ${darkBlockquoteBg};
+          --bg-color: \${d.bg};
+          --text-color: \${d.text};
+          --accent-color: \${d.accent};
+          --muted-color: \${d.muted};
+          --surface-color: \${d.surface};
+          --border-color: \${d.border};
+          --link-color: \${d.link};
+          --code-bg: \${d.codeBg};
+          --blockquote-border: \${d.bqBorder};
+          --blockquote-bg: \${d.bqBg};
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        ::selection { background: ${effectiveStyle.accentColor}22; }
+        ::selection { background: \${s.accentColor}22; }
         @keyframes fadeUp {
           from { opacity: 0; transform: translateY(16px); }
           to { opacity: 1; transform: translateY(0); }
@@ -714,14 +803,14 @@ ${prismEffect}
 
         {/* Header */}
         <header
-          className="pt-8 pb-4 px-6 no-print"
+          className="pt-6 pb-6 px-6 no-print"
           style={{
-            maxWidth: "${effectiveStyle.maxWidth}",
+            maxWidth: s.maxWidth,
             margin: "0 auto",
             animation: mounted ? "fadeUp 0.6s ease-out both" : "none",
           }}
         >
-          <nav className="flex items-center justify-between mb-16">
+          <nav className="flex items-center justify-between mb-12">
             <a
               href="/"
               className="text-sm tracking-wider uppercase no-underline transition-opacity hover:opacity-60"
@@ -729,7 +818,7 @@ ${prismEffect}
             >
               Home
             </a>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3" style={{ position: "relative" }}>
               ${hasToc ? `<button
                 onClick={() => setShowToc(!showToc)}
                 className="text-sm transition-opacity hover:opacity-60"
@@ -737,6 +826,54 @@ ${prismEffect}
               >
                 Contents
               </button>` : ""}
+              {/* Style switcher */}
+              <div ref={stylePickerRef} style={{ position: "relative" }}>
+                <button
+                  onClick={() => setShowStylePicker(!showStylePicker)}
+                  className="text-sm transition-opacity hover:opacity-60"
+                  style={{ color: "var(--muted-color)", background: "none", border: "1px solid var(--border-color)", cursor: "pointer", fontFamily: "var(--body-font)", padding: "0.35rem 0.7rem", borderRadius: "6px", fontSize: "0.8rem" }}
+                  aria-label="Select style"
+                >
+                  Style: {styleNames[currentStyle]}
+                </button>
+                {showStylePicker && (
+                  <div style={{
+                    position: "absolute",
+                    top: "calc(100% + 6px)",
+                    right: 0,
+                    backgroundColor: "var(--surface-color)",
+                    border: "1px solid var(--border-color)",
+                    borderRadius: "8px",
+                    padding: "0.375rem",
+                    zIndex: 50,
+                    minWidth: "170px",
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  }}>
+                    {Object.keys(styles).map((key) => (
+                      <button
+                        key={key}
+                        onClick={() => { setCurrentStyle(key); setShowStylePicker(false); }}
+                        style={{
+                          display: "block",
+                          width: "100%",
+                          textAlign: "left",
+                          padding: "0.45rem 0.7rem",
+                          background: currentStyle === key ? "var(--border-color)" : "none",
+                          border: "none",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                          color: "var(--text-color)",
+                          fontFamily: "var(--body-font)",
+                          fontSize: "0.82rem",
+                          fontWeight: currentStyle === key ? 600 : 400,
+                        }}
+                      >
+                        {styleNames[key]}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 style={{ background: "none", border: "none", cursor: "pointer", fontSize: "1.1rem", padding: "0.25rem", lineHeight: 1 }}
@@ -753,7 +890,7 @@ ${prismEffect}
           <div
             className="no-print"
             style={{
-              maxWidth: "${effectiveStyle.maxWidth}",
+              maxWidth: s.maxWidth,
               margin: "0 auto -2rem",
               padding: "0 1.5rem 2rem",
             }}
@@ -770,7 +907,7 @@ ${prismEffect}
         {/* Hero */}
         <div
           style={{
-            maxWidth: "${effectiveStyle.maxWidth}",
+            maxWidth: s.maxWidth,
             margin: "0 auto",
             padding: "0 1.5rem",
             animation: mounted ? "fadeUp 0.6s ease-out 0.1s both" : "none",
@@ -783,29 +920,29 @@ ${prismEffect}
               fontSize: "clamp(2.25rem, 6vw, 3.25rem)",
               color: "var(--accent-color)",
               letterSpacing: "-0.025em",
-              marginBottom: "${subtitle ? "1rem" : "1.5rem"}",
+              marginBottom: "${subtitle ? "1.1rem" : "1.7rem"}",
               lineHeight: 1.15,
             }}
           >
             ${escapeForJSX(title)}
           </h1>
-          ${subtitle ? `<p className="text-lg mb-6" style={{ color: "var(--muted-color)", fontSize: "1.2rem", lineHeight: 1.5, fontFamily: "var(--body-font)" }}>${escapeForJSX(subtitle)}</p>` : ""}
-          <div className="flex items-center gap-3 mb-8 text-sm" style={{ color: "var(--muted-color)" }}>
+          ${subtitle ? `<p className="text-lg mb-6" style={{ color: "var(--muted-color)", fontSize: "1.15rem", lineHeight: 1.62, fontFamily: "var(--body-font)", maxWidth: "60ch" }}>${escapeForJSX(subtitle)}</p>` : ""}
+          <div className="flex items-center gap-3 mb-10 text-sm" style={{ color: "var(--muted-color)" }}>
             ${author ? `<span>${escapeForJSX(author)}</span>` : ""}
             ${date && author ? `<span style={{ opacity: 0.4 }}>&middot;</span>` : ""}
             ${date ? `<time>${escapeForJSX(date)}</time>` : ""}
             ${(date || author) ? `<span style={{ opacity: 0.4 }}>&middot;</span>` : ""}
             <span>${readTime}</span>
           </div>
-          <hr className="mb-12 border-none h-px" style={{ backgroundColor: "var(--border-color)" }} />
+          <hr className="border-none h-px" style={{ backgroundColor: "var(--border-color)", marginBottom: "2.5rem" }} />
         </div>
 
         {/* Content */}
         <article
           style={{
-            maxWidth: "${effectiveStyle.maxWidth}",
+            maxWidth: s.maxWidth,
             margin: "0 auto",
-            padding: "0 1.5rem 6rem",
+            padding: "0 1.5rem 7rem",
             animation: mounted ? "fadeUp 0.6s ease-out 0.2s both" : "none",
           }}
         >
@@ -817,7 +954,7 @@ ${prismEffect}
           className="py-12 px-6 text-center"
           style={{
             borderTop: "1px solid var(--border-color)",
-            maxWidth: "${effectiveStyle.maxWidth}",
+            maxWidth: s.maxWidth,
             margin: "0 auto",
           }}
         >
@@ -922,7 +1059,7 @@ const title = values.title || meta.title || filename.replace(/-/g, " ").replace(
 const routePath = values.path || `/${slugify(title)}`;
 const isPublic = !values.private;
 
-const pageCode = generatePageCode(title, body, style, meta, values.accent);
+const pageCode = generatePageCode(title, body, style, styleName, meta, values.accent);
 
 // Output the generated code and metadata as JSON for the skill to use
 const output = {

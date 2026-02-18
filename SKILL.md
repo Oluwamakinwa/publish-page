@@ -82,6 +82,7 @@ Parse the `PUBLISH_OUTPUT:` line from stdout to extract the JSON, then call `upd
 Every published page includes:
 
 - **Dark mode**: Auto-detects system preference (`prefers-color-scheme`) with a manual toggle button
+- **Style selector**: Dropdown in the header to switch presets live, with selection persisted in `localStorage` (`zo-publish-style`) across pages
 - **Reading progress bar**: Thin colored bar at the top showing scroll position
 - **Reading time estimate**: Word-count-based "X min read" shown in the hero section
 - **Table of contents**: Auto-generated from headings (shown when 3+ headings exist), toggled via "Contents" button
@@ -89,6 +90,7 @@ Every published page includes:
 - **Open Graph meta tags**: `og:title`, `og:description`, `og:type`, `twitter:card` for social sharing previews
 - **Print stylesheet**: Clean print output — hides nav/progress, shows link URLs inline, wraps code blocks
 - **Fade-in animations**: Staggered entrance animations on page load
+- **Improved spacing rhythm**: Wider paragraph line-height, better heading separation, and more breathing room for long-form documents
 - **Custom accent color**: Override the link/accent color with `--accent "#hex"` without changing presets
 
 ### Mermaid Diagrams
