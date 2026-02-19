@@ -173,3 +173,16 @@ Visit [/styles](https://zzzz.zo.space/styles) to see all 7 style presets side-by
 - [/the-complete-feature-test](https://zzzz.zo.space/the-complete-feature-test) — Every feature demonstrated (tables, code, mermaid, TOC, dark mode)
 - [/system-architecture](https://zzzz.zo.space/system-architecture) — Mermaid diagrams in action
 - [/the-art-of-slow-computing](https://zzzz.zo.space/the-art-of-slow-computing) — Editorial style example
+
+## Live Docs Site (Alternative Workflow)
+
+For large documentation projects (like the "Unified Onboarding Bible"), we have set up a **Live Docs Site** at `https://live-docs-zzzz.zocomputer.io`.
+
+- **Workflow:** Simply save markdown files to `claudesidian-vault/07_Published`. They are instantly live.
+- **Features:** Supports all the same styling (Editorial, Minimal, etc.), Mermaid diagrams, and Dark Mode.
+- **Best for:** Massive, multi-page documentation sites where you want "save-to-publish" simplicity.
+- **Code:** The source code for this site is in `/home/workspace/sites/docs` and pushed to `https://github.com/Oluwamakinwa/docs-site`.
+
+**When to use which?**
+- Use **Publish Page Skill** (`publish-page`) for one-off articles or landing pages on your personal `zzzz.zo.space` profile.
+- Use **Live Docs Site** for your "Bible", team docs, or comprehensive knowledge bases.
